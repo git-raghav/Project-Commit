@@ -2,7 +2,7 @@ name: Raghav's Daily Commit
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Every day at midnight UTC
+    - cron: '*/1 * * * *'  # Every day at midnight UTC to runs every 7-8 min set cron to '*/1 * * * *'
 
 jobs:
   commit:
@@ -32,6 +32,6 @@ jobs:
         git config --global user.email "raghavagarwal3618@gmail.com"
         git add "$FILE"
         git commit -m "changed logic"
-        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/git-raghav/mean-commit.git
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/git-raghav/Project-commit.git
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
