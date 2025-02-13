@@ -32,6 +32,6 @@ jobs:
         git config --global user.email "raghavagarwal3618@gmail.com"
         git add "$FILE"
         git commit -m "changed logic"
-        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/beesou777/mean-commit.git
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/git-raghav/mean-commit.git
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
