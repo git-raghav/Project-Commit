@@ -1,8 +1,8 @@
-name: Raghav's Automated Commit
+name: Raghav's Daily Commit
 
 on:
   schedule:
-    - cron: '*/1 * * * *'  # Runs every minute
+    - cron: '*/1 * * * *'  # Every day at midnight UTC to runs every 7-8 min set cron to '*/1 * * * *'
 
 jobs:
   commit:
@@ -18,16 +18,20 @@ jobs:
       run: |
         FILE="commit_number.md"
         if [ ! -f "$FILE" ]; then
-          echo "Hello, my name is Raghav Agarwal" > "$FILE"
+          echo "Hello, my name is raghav agarwal" > "$FILE"
           echo "commit number: 1" >> "$FILE"
         else
-          CURRENT_COUNT=$(grep -oP 'commit number: \K\d+' "$FILE" || echo 0)
+          CURRENT_COUNT=$(grep -oP 'commit number: \K\d+' "$FILE")
+          if [ -z "$CURRENT_COUNT" ]; then
+            CURRENT_COUNT=0
+          fi
           NEXT_COUNT=$((CURRENT_COUNT + 1))
           sed -i "/commit number: /c\commit number: $NEXT_COUNT" "$FILE"
         fi
-
+        git config --global user.name "git-raghav"
+        git config --global user.email "raghavagarwal3618@gmail.com"
         git add "$FILE"
-        git commit -m "changed logic - Raghav Agarwal"
-        git push origin main
+        git commit -m "changed logic"
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/beesou777/mean-commit.git
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
