@@ -31,7 +31,22 @@ jobs:
         git config --global user.name "git-raghav"
         git config --global user.email "raghavagarwal3618@gmail.com"
         git add "$FILE"
-        git commit -m "changed logic"
+        
+        arr[0]="changed backend logic"
+        arr[1]="added ui features"
+        arr[2]="updated README.md"
+        arr[3]="update"
+        arr[4]="initial commit"
+        arr[5]="resolved an issue"
+        arr[6]="added new features"
+        arr[7]="planned new projects"
+        arr[8]="updated todo"
+        arr[9]="responsive"
+          
+        rand=$[$RANDOM % ${#arr[@]}]
+          
+        git commit -m "${arr[$rand]}"
+        
         git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/git-raghav/Project-commit.git
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
