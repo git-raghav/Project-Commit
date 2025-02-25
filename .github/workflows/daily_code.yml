@@ -2,7 +2,7 @@ name: Raghav's Daily Commit
 
 on:
   schedule:
-    - cron: '0 */3 * * *'
+    - cron: '0 */1 * * *'
 
 jobs:
   commit:
