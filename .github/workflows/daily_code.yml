@@ -2,7 +2,7 @@ name: Raghav's Daily Commit
 
 on:
   schedule:
-    - cron: '0 */2 * * *'  # Runs every 2 hours
+    - cron: '0 */1 * * *'
 
 jobs:
   commit:
@@ -14,51 +14,39 @@ jobs:
       with:
         ref: main
 
-    - name: Create commit conditionally
+    - name: Create file and commit
       run: |
-        # Define commit messages
-        arr=("changed backend logic" "added UI features" "updated README.md" "update"
-             "initial commit" "resolved an issue" "added new features" "planned new projects"
-             "updated todo" "responsive")
-
-        # Decide randomly whether to commit in this run
-        MIN_COMMITS=3
-        MAX_COMMITS=10
-        CURRENT_HOUR=$(date +%H)
-        TODAY=$(date +%Y-%m-%d)
-
-        # Generate a fixed number of commits for today
-        RANDOM_SEED=$(( $(echo -n $TODAY | md5sum | cut -c 1-8) % (MAX_COMMITS - MIN_COMMITS + 1) + MIN_COMMITS ))
-
-        # Check how many commits have been made today
-        COMMIT_COUNT=$(git log --since=midnight --oneline | wc -l)
-
-        if [[ "$COMMIT_COUNT" -ge "$RANDOM_SEED" ]]; then
-          echo "Skipping commit, today's limit ($RANDOM_SEED) reached."
-          exit 0
-        fi
-
-        # Create or update a file
         FILE="commit_number.md"
         if [ ! -f "$FILE" ]; then
-          echo "Hello, my name is Raghav Agarwal" > "$FILE"
+          echo "Hello, my name is raghav agarwal" > "$FILE"
           echo "commit number: 1" >> "$FILE"
         else
-          CURRENT_COUNT=$(grep -oP 'commit number: \K\d+' "$FILE" || echo "0")
+          CURRENT_COUNT=$(grep -oP 'commit number: \K\d+' "$FILE")
+          if [ -z "$CURRENT_COUNT" ]; then
+            CURRENT_COUNT=0
+          fi
           NEXT_COUNT=$((CURRENT_COUNT + 1))
           sed -i "/commit number: /c\commit number: $NEXT_COUNT" "$FILE"
         fi
-
-        # Configure Git
         git config --global user.name "git-raghav"
         git config --global user.email "raghavagarwal3618@gmail.com"
-
-        # Pick a random commit message
-        rand=$(( RANDOM % ${#arr[@]} ))
         git add "$FILE"
+        
+        arr[0]="changed backend logic"
+        arr[1]="added ui features"
+        arr[2]="updated README.md"
+        arr[3]="update"
+        arr[4]="initial commit"
+        arr[5]="resolved an issue"
+        arr[6]="added new features"
+        arr[7]="planned new projects"
+        arr[8]="updated todo"
+        arr[9]="responsive"
+          
+        rand=$[$RANDOM % ${#arr[@]}]
+          
         git commit -m "${arr[$rand]}"
-
-        # Push changes
+        
         git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/git-raghav/Project-commit.git
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
